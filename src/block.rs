@@ -9,6 +9,7 @@ pub struct Block {
     pub transactions: Vec<String>,
     pub previous_hash: String,
     pub hash: String,
+    pub nonce: u64,
 }
 
 impl Block {
@@ -20,6 +21,7 @@ impl Block {
             transactions,
             previous_hash,
             hash: String::new(),
+            nonce: 0,
         };
         block.hash = block.calculate_hash();
         block
@@ -36,11 +38,15 @@ impl Block {
         format!("{:x}", hash)
     }
     
-    // fn mine(&mut self, difficulty: usize) {
-    //     let prefix: String = std::iter::repeat("0").take(difficulty).collect();
-    //     while !self.hash.starts_with(&prefix) {
-    //         self.nonce += 1;
-    //         self.hash = self.calculate_hash();
-    //     }
-    // }
+    pub fn mine(&mut self, difficulty: usize) {
+        let prefix = std::iter::repeat("0").take(difficulty).collect::<String>();
+        println!("Pref: {}", prefix);
+        while !self.hash.starts_with(&prefix) {
+            println!("Nonce: {}", self.nonce);
+            self.nonce += 1;
+            println!("Hash: {}", self.hash);
+            self.hash = self.calculate_hash();
+        }
+    }
+    
 }
